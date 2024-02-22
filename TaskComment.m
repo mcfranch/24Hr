@@ -31,7 +31,7 @@ function onlineNSP = TaskComment(filename,event)
 address = {'192.168.137.3','192.168.137.178'};
 
 %% Strip away any filepath/file extention information
-filename = fileparts(filename);
+[~,filename] = fileparts(filename);
 
 %% Find/Open Connections to Available Blackrock NSPs
 availableNSPs = zeros(size(address));
