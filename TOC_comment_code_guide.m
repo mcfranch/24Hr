@@ -1,0 +1,43 @@
+%% GUIDE to changes that needed to be done to all codes to work with TOC and comment system
+% by Eleonora
+% Find lines of code (control F) that contain the word: Blackrock
+% If those lines are the start/stop functions, comment them 
+% Add just below that a new line to replace them with the function
+% TaskComment
+% The function takes the same variable (name) you were using with start/stop
+% (let's say filename) + a flag. The flag needs to be different depending
+% on the function you are calling and its context.
+% StartBlackrockAquisition -> 'start'
+% StopBlackrockAquisition -> either 'stop' or 'kill' or 'error'
+% here is how your code should look:
+
+filename ='whatever';
+
+%[onlineNSP,~,~]=StartBlackrockAquisition(filename);
+onlineNSP=TaskComment(filename,'start'); %added 02/22/2024
+
+%bla bla bla rest of your code
+
+%StopBlackrockAquisition(filename,onlineNSP);
+TaskComment(filename,'stop'); %added 02/22/2024
+
+%% if you have additional stops for abort and errors:
+
+%StopBlackrockAquisition(filename,onlineNSP);
+
+% if you have an abort function, use this to mark the manual stop there:
+TaskComment(filename,'kill')
+
+% if you have your whole code in a try/catch, place this in the catch
+TaskComment(filename,'error')
+
+%% special section: if you are sendng comments for trials or other events information between your start and stop
+% here is how you can make sure that these are getting sent to both NSPs
+% (if there are two NSPs)
+
+for jj = onlineNSP % this uses the output of TaskComment to determine how many NSPs are online
+    cbmex('comment',255,0,sprintf('%s','whatever your comment is'),'instance',jj-1);
+    %cbmex comment gets sent to each NSP (1=NSP-2 and 0=NSP1)
+end
+
+% FIN
