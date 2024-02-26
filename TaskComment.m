@@ -50,7 +50,7 @@ onlineNSP = find(availableNSPs==1);
 
 %% Blackrock Filename Prefix/Suffix Check
 
-% Add prefix with csv modification update code (Check Only)
+% Add prefix with CSV log file (Check Only)
 EMU = '0001';
 subj = 'TEST';
 prefix = ['EMU-',EMU,'_subj-',subj','_'];
@@ -72,7 +72,7 @@ switch event
     case 'start'
         eventCode = '$START:';
         eventColor = 65280;
-        % csv modification update code (Update!!!)
+        % Update CSV task log file
     case 'stop'
         eventCode = '$STOP:';
         eventColor = 16711935;
@@ -85,7 +85,7 @@ switch event
     case 'annotate'
         eventCode = '@EVENT:';
         eventColor = 16711680;
-        % fill with other csv code for annotations
+        % Update CSV annotation log file
 end
 
 %% Sending Comment
