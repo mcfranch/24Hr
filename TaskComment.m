@@ -50,10 +50,10 @@ onlineNSP = find(availableNSPs==1);
 
 %% Blackrock Filename Prefix/Suffix Check
 
-% Add prefix with CSV log file (Check Only)
+% Find prefix with CSV log file (Check Only)
 EMU = '0001';
 subj = 'TEST';
-prefix = ['EMU-',EMU,'_subj-',subj','_'];
+prefix = ['EMU-',EMU,'_subj-',subj,'_'];
 
 if numel(onlineNSP)==1
     suffix = {[]};
@@ -90,11 +90,19 @@ end
 
 %% Sending Comment
 for i = 1:numel(onlineNSP)
-    cbmex('comment', eventColor, 0,[eventCode,'EMU-0001'],'instance',onlineNSP(i)-1);
+    comment = [eventCode,'EMU-0001'];
+    cbmex('comment', eventColor, 0,comment,'instance',onlineNSP(i)-1);
+    disp(comment)
+    comment = [];
 end
 
-for i = 1:numel(onlineNSP)
-    cbmex('comment', eventColor, 0,['&META:',prefix,filename,suffix{i}],'instance',onlineNSP(i)-1);
+if strcmp(event,'start')
+    for i = 1:numel(onlineNSP)
+        comment = ['$TASKID:',prefix,filename,suffix{i}];
+        cbmex('comment', eventColor, 0,comment,'instance',onlineNSP(i)-1);
+        disp(comment)
+        comment = [];
+    end
 end
 
 end
