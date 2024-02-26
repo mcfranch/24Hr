@@ -70,17 +70,17 @@ end
 %% Event Type
 switch event
     case 'start'
-        eventCode = '$START:';
+        eventCode = '$TASKSTART:';
         eventColor = 65280;
         % Update CSV task log file
     case 'stop'
-        eventCode = '$STOP:';
+        eventCode = '$TASKSTOP:';
         eventColor = 16711935;
     case 'kill'
-        eventCode = '$KILL:';
+        eventCode = '$TASKKILL:';
         eventColor = 255;
     case 'error'
-        eventCode = '$ERR:';
+        eventCode = '$TASKERR:';
         eventColor = 255;
     case 'annotate'
         eventCode = '@EVENT:';
