@@ -1,4 +1,4 @@
-function onlineNSP = TaskComment(filename,event)
+function [onlineNSP,EMU,subj] = TaskComment(filename,event)
 %TASKCOMMENT Sends a comment to Blackrock NSPs based on filename and given
 %event flag
 %
@@ -28,7 +28,9 @@ function onlineNSP = TaskComment(filename,event)
 %           session
 %
 % Author: Joshua Adkinson
-address = {'192.168.137.3','192.168.137.178'};
+
+% address = {'192.168.137.3','192.168.137.178'};
+address = getIPAddressesFromPortNames({'NSP1','NSP2'});
 
 %% Strip away any filepath/file extention information
 [~,filename] = fileparts(filename);
@@ -46,7 +48,13 @@ for i=1:length(address)
 end
 onlineNSP = find(availableNSPs==1);
 
-%% Blackrock Filename Suffix Check
+%% Blackrock Filename Prefix/Suffix Check
+
+% Add prefix with csv modification update code (Check Only)
+EMU = '0001';
+subj = 'TEST';
+prefix = ['EMU-',EMU,'_subj-',subj','_'];
+
 if numel(onlineNSP)==1
     suffix = {[]};
 else
@@ -64,6 +72,7 @@ switch event
     case 'start'
         eventCode = '$START:';
         eventColor = 65280;
+        % csv modification update code (Update!!!)
     case 'stop'
         eventCode = '$STOP:';
         eventColor = 16711935;
@@ -73,11 +82,19 @@ switch event
     case 'error'
         eventCode = '$ERR:';
         eventColor = 255;
+    case 'annotate'
+        eventCode = '@EVENT:';
+        eventColor = 16711680;
+        % fill with other csv code for annotations
 end
 
 %% Sending Comment
-for i = onlineNSP
-    cbmex('comment', eventColor, 0,[eventCode,filename,suffix{i}],'instance',i-1);
+for i = 1:numel(onlineNSP)
+    cbmex('comment', eventColor, 0,[eventCode,'EMU-0001'],'instance',onlineNSP(i)-1);
+end
+
+for i = 1:numel(onlineNSP)
+    cbmex('comment', eventColor, 0,['&META:',prefix,filename,suffix{i}],'instance',onlineNSP(i)-1);
 end
 
 end
