@@ -1,4 +1,4 @@
-function [onlineNSP,EMU,subj] = TaskComment(filename,event)
+function [onlineNSP,EMU,subj] = TaskComment(event,filename)
 %TASKCOMMENT Sends a comment to Blackrock NSPs based on filename and given
 %event flag
 %
@@ -28,6 +28,10 @@ function [onlineNSP,EMU,subj] = TaskComment(filename,event)
 %           session
 %
 % Author: Joshua Adkinson
+
+if nargin==1
+    filename = '';
+end
 
 % address = {'192.168.137.3','192.168.137.178'};
 address = getIPAddressesFromPortNames({'NSP1','NSP2'});
@@ -93,7 +97,6 @@ for i = 1:numel(onlineNSP)
     comment = [eventCode,'EMU-',EMU];
     cbmex('comment', eventColor, 0,comment,'instance',onlineNSP(i)-1);
     disp(comment)
-    comment = [];
 end
 
 if strcmp(event,'start')
@@ -101,7 +104,6 @@ if strcmp(event,'start')
         comment = ['$TASKID:',prefix,filename,suffix{i}];
         cbmex('comment', eventColor, 0,comment,'instance',onlineNSP(i)-1);
         disp(comment)
-        comment = [];
     end
 end
 
