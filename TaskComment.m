@@ -51,9 +51,8 @@ onlineNSP = find(availableNSPs==1);
 %% Blackrock Filename Prefix/Suffix Check
 
 % Find prefix with CSV log file (Check Only)
-EMU = '0001';
-subj = 'TEST';
-prefix = ['EMU-',EMU,'_subj-',subj,'_'];
+[EMU_id, Subj, T] = getEMU();
+prefix = ['EMU-',EMU_id,'_subj-',Subj,'_'];
 
 if numel(onlineNSP)==1
     suffix = {[]};

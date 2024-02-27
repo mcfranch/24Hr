@@ -9,8 +9,9 @@
 
 %% THIS IS HUGELY IMPORTANT--YOU NEED TO MAKE SURE THE CURRENT/ FOLDER IS EMPTY!!
 
+%%%%%%%%%%%%%%%%%% MAKE THIS THE CURRENT PATIENT %%%%%%%%%%%%%%%%%%%%%%%%
 Patient_ID = 'YEX';
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %% 
 
@@ -20,6 +21,9 @@ Meta = "";
 %%
 
 T = table(EMU_id,Meta); 
+
+writetable(T,['Current/',Patient_ID,'_log.csv'])
+
 
 
 
