@@ -51,7 +51,7 @@ onlineNSP = find(availableNSPs==1);
 %% Blackrock Filename Prefix/Suffix Check
 
 % Find prefix with CSV log file (Check Only)
-EMU = '0001';
+EMU = '0003';
 subj = 'TEST';
 prefix = ['EMU-',EMU,'_subj-',subj,'_'];
 
@@ -90,7 +90,7 @@ end
 
 %% Sending Comment
 for i = 1:numel(onlineNSP)
-    comment = [eventCode,'EMU-0001'];
+    comment = [eventCode,'EMU-',EMU];
     cbmex('comment', eventColor, 0,comment,'instance',onlineNSP(i)-1);
     disp(comment)
     comment = [];
