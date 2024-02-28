@@ -57,7 +57,6 @@ onlineNSP = find(availableNSPs==1);
 
 
 %% Blackrock Filename Prefix/Suffix Check
-% <<<<<<< Updated upstream
 % Find prefix from file name:
 % now for testing: hardcoded
 % prefix = regexp(filename,'^[a-zA-Z0-9]+-[a-zA-Z0-9]+','match');
@@ -68,8 +67,6 @@ EMU = '0003';
 subj = 'TEST';
 prefix = {'EMU-',EMU,'_subj-',subj,'_'};
 
-% =======
-% >>>>>>> Stashed changes
 if numel(onlineNSP)==1
     suffix = {[]};
 else
