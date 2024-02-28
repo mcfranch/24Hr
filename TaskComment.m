@@ -33,6 +33,7 @@ if nargin==1
     filename = '';
 end
 
+%% Get IP Addresses of NSP ethernet ports
 % address = {'192.168.137.3','192.168.137.178'};
 address = getIPAddressesFromPortNames({'NSP1','NSP2'});
 
@@ -53,8 +54,12 @@ end
 onlineNSP = find(availableNSPs==1);
 
 %% Blackrock Filename Prefix/Suffix Check
-
-% Find prefix with CSV log file (Check Only)
+% Find prefix from file name:
+% now for testing: hardcoded
+prefix = regexp(filename,'^[a-zA-Z0-9]+-[a-zA-Z0-9]+','match');
+if isempty(prefix) || numel(prefix)>1
+    error('Invalid filename prefix')
+end
 EMU = '0003';
 subj = 'TEST';
 prefix = ['EMU-',EMU,'_subj-',subj,'_'];
@@ -76,7 +81,6 @@ switch event
     case 'start'
         eventCode = '$TASKSTART:';
         eventColor = 65280;
-        % Update CSV task log file
     case 'stop'
         eventCode = '$TASKSTOP:';
         eventColor = 16711935;
@@ -89,19 +93,18 @@ switch event
     case 'annotate'
         eventCode = '@EVENT:';
         eventColor = 16711680;
-        % Update CSV annotation log file
 end
 
 %% Sending Comment
 for i = 1:numel(onlineNSP)
-    comment = [eventCode,'EMU-',EMU];
+    comment = [eventCode,prefix{1}];
     cbmex('comment', eventColor, 0,comment,'instance',onlineNSP(i)-1);
     disp(comment)
 end
 
 if strcmp(event,'start')
     for i = 1:numel(onlineNSP)
-        comment = ['$TASKID:',prefix,filename,suffix{i}];
+        comment = ['$TASKID:',filename,suffix{i}];
         cbmex('comment', eventColor, 0,comment,'instance',onlineNSP(i)-1);
         disp(comment)
     end
