@@ -37,8 +37,10 @@ end
 % address = {'192.168.137.3','192.168.137.178'};
 address = getIPAddressesFromPortNames({'NSP1','NSP2'});
 
+
 %% Strip away any filepath/file extention information
 [~,filename] = fileparts(filename);
+
 
 %% Find/Open Connections to Available Blackrock NSPs
 availableNSPs = zeros(size(address));
@@ -53,7 +55,9 @@ for i=1:length(address)
 end
 onlineNSP = find(availableNSPs==1);
 
+
 %% Blackrock Filename Prefix/Suffix Check
+% <<<<<<< Updated upstream
 % Find prefix from file name:
 % now for testing: hardcoded
 % prefix = regexp(filename,'^[a-zA-Z0-9]+-[a-zA-Z0-9]+','match');
@@ -64,17 +68,21 @@ EMU = '0003';
 subj = 'TEST';
 prefix = {'EMU-',EMU,'_subj-',subj,'_'};
 
+% =======
+% >>>>>>> Stashed changes
 if numel(onlineNSP)==1
     suffix = {[]};
 else
     suffix = strcat(repmat({'_NSP-'},numel(onlineNSP),1),cellstr(num2str(onlineNSP(:))));
 end
 
+
 %% Check Character Length
 commentLength = numel([filename,suffix{1}])+7;
 if commentLength>92
     error('The name for this task exceeds the 92 character length limit. Please shorten name.')
 end
+
 
 %% Event Type
 switch event
@@ -95,13 +103,16 @@ switch event
         eventColor = 16711680;
 end
 
-%% Sending Comment
+
+%% Sending Comments
+%Event Comment
 for i = 1:numel(onlineNSP)
     comment = [eventCode,prefix{1}];
     cbmex('comment', eventColor, 0,comment,'instance',onlineNSP(i)-1);
     disp(comment)
 end
 
+%TaskID Comment
 if strcmp(event,'start')
     for i = 1:numel(onlineNSP)
         comment = ['$TASKID ',filename,suffix{i}];
