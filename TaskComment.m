@@ -70,27 +70,27 @@ end
 %% Event Type
 switch event
     case 'start'
-        eventCode = '$TASKSTART:';
+        eventCode = '$TASKSTART';
         eventColor = 65280;
         % Update CSV task log file
     case 'stop'
-        eventCode = '$TASKSTOP:';
+        eventCode = '$TASKSTOP';
         eventColor = 16711935;
     case 'kill'
-        eventCode = '$TASKKILL:';
+        eventCode = '$TASKKILL';
         eventColor = 255;
     case 'error'
-        eventCode = '$TASKERR:';
+        eventCode = '$TASKERROR';
         eventColor = 255;
     case 'annotate'
-        eventCode = '@EVENT:';
+        eventCode = '$EVENT';
         eventColor = 16711680;
         % Update CSV annotation log file
 end
 
 %% Sending Comment
 for i = 1:numel(onlineNSP)
-    comment = [eventCode,'EMU-0001'];
+    comment = [eventCode,' ','EMU-0001'];
     cbmex('comment', eventColor, 0,comment,'instance',onlineNSP(i)-1);
     disp(comment)
     comment = [];
@@ -98,7 +98,7 @@ end
 
 if strcmp(event,'start')
     for i = 1:numel(onlineNSP)
-        comment = ['$TASKID:',prefix,filename,suffix{i}];
+        comment = ['$TASKID',' ',prefix,filename,suffix{i}];
         cbmex('comment', eventColor, 0,comment,'instance',onlineNSP(i)-1);
         disp(comment)
         comment = [];
