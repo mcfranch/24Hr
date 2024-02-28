@@ -1,4 +1,4 @@
-function [onlineNSP,EMU,subj] = TaskComment(event,filename)
+function [onlineNSP] = TaskComment(event,filename)
 %TASKCOMMENT Sends a comment to Blackrock NSPs based on filename and given
 %event flag
 %
@@ -56,13 +56,13 @@ onlineNSP = find(availableNSPs==1);
 %% Blackrock Filename Prefix/Suffix Check
 % Find prefix from file name:
 % now for testing: hardcoded
-prefix = regexp(filename,'^[a-zA-Z0-9]+-[a-zA-Z0-9]+','match');
-if isempty(prefix) || numel(prefix)>1
-    error('Invalid filename prefix')
-end
+% prefix = regexp(filename,'^[a-zA-Z0-9]+-[a-zA-Z0-9]+','match');
+% if isempty(prefix) || numel(prefix)>1
+%     error('Invalid filename prefix')
+% end
 EMU = '0003';
 subj = 'TEST';
-prefix = ['EMU-',EMU,'_subj-',subj,'_'];
+prefix = {'EMU-',EMU,'_subj-',subj,'_'};
 
 if numel(onlineNSP)==1
     suffix = {[]};
@@ -79,19 +79,19 @@ end
 %% Event Type
 switch event
     case 'start'
-        eventCode = '$TASKSTART:';
+        eventCode = '$TASKSTART ';
         eventColor = 65280;
     case 'stop'
-        eventCode = '$TASKSTOP:';
+        eventCode = '$TASKSTOP ';
         eventColor = 16711935;
     case 'kill'
-        eventCode = '$TASKKILL:';
+        eventCode = '$TASKKILL ';
         eventColor = 255;
     case 'error'
-        eventCode = '$TASKERR:';
+        eventCode = '$TASKERR ';
         eventColor = 255;
     case 'annotate'
-        eventCode = '@EVENT:';
+        eventCode = '@EVENT ';
         eventColor = 16711680;
 end
 
@@ -104,7 +104,7 @@ end
 
 if strcmp(event,'start')
     for i = 1:numel(onlineNSP)
-        comment = ['$TASKID:',filename,suffix{i}];
+        comment = ['$TASKID ',filename,suffix{i}];
         cbmex('comment', eventColor, 0,comment,'instance',onlineNSP(i)-1);
         disp(comment)
     end
