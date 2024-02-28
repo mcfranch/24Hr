@@ -1,4 +1,4 @@
-function [EMU_id, Subj, T] = getEMU()
+function [emu_id, Subj, T] = getEMU()
 
     tableFile = dir(fullfile(pwd,'Current','*.csv'));
     
@@ -11,9 +11,9 @@ function [EMU_id, Subj, T] = getEMU()
         
     else
         T = readtable(fullfile(tableFile.folder,tableFile.name));
-        EMU_id_prev = T.EMU_id(end);
+        emu_id_prev = T.emu_id(end);
         
-        EMU_id = sprintf('%04d', EMU_id_prev+1);
+        emu_id = sprintf('%04d', emu_id_prev+1);
     end
 
 

@@ -15,15 +15,15 @@ Patient_ID = 'YEX';
 
 %% 
 
-EMU_id = "0000";
-Meta = "";
+emu_id = "0000";
+task_id = "Initialize Log";
 
 %%
 
-T = table(EMU_id,Meta); 
+T = cell2table({emu_id,task_id},"VariableNames", ["emu_id","task_id"]);
 
 writetable(T,['Current/',Patient_ID,'_log.csv'])
 
-
+clear all
 
 
