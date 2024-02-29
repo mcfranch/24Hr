@@ -53,6 +53,8 @@ emuStr = regexp(filename,'EMU-\d+','match');
 if isempty(emuStr)
     [emuNum] = getNextLogEntry;
     emuStr = sprintf('EMU-%04d',emuNum);
+else
+    emuStr = emuStr{1};
 end
 
 if numel(onlineNSP)==1

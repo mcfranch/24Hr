@@ -8,6 +8,7 @@ function initializeLogFile(subjID)
 
 
 %% THIS IS HUGELY IMPORTANT--YOU NEED TO MAKE SURE THE CURRENT/ FOLDER IS EMPTY!!
+
 logFolder = fullfile(userpath,'PatientData','+CurrentPatientLog');
 if ~exist(logFolder,'dir')
     mkdir(logFolder)
@@ -19,9 +20,9 @@ if ~isempty(files)
 end
 
 %% 
-emu_id = "0000";
-task_id = "Initialize Log";
-success_id = "1";
+emu_id = 0;
+task_id = 'Initialize Log';
+success_id = 1;
 
 %%
 T = cell2table({emu_id,task_id,success_id},"VariableNames", ["emu_id","task_id","success_id"]);
