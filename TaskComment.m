@@ -1,4 +1,4 @@
-function [onlineNSP] = TaskComment(filename,event)
+function [onlineNSP] = TaskComment(event,filename)
 %TASKCOMMENT Sends a comment to Blackrock NSPs based on filename and given
 %event flag
 %
@@ -48,11 +48,12 @@ for i=1:length(address)
 end
 onlineNSP = find(availableNSPs==1);
 
-%% Blackrock Filename Prefix/Suffix Check
-
-% Find prefix with CSV log file (Check Only)
-[EMU_id, Subj, T] = getEMU();
-prefix = ['EMU-',EMU_id,'_subj-',Subj,'_'];
+%% Blackrock Filename EMUNumber/Suffix Check
+emuStr = regexp(filename,'EMU-\d+','match');
+if isempty(emuStr)
+    [emuNum] = getNextLogEntry;
+    emuStr = sprintf('EMU-%04d',emuNum);
+end
 
 if numel(onlineNSP)==1
     suffix = {[]};
@@ -69,38 +70,37 @@ end
 %% Event Type
 switch event
     case 'start'
-        eventCode = '$TASKSTART:';
+        eventCode = '$TASKSTART ';
         eventColor = 65280;
-        % Update CSV task log file
+        setNextLogEntry(filename)
     case 'stop'
-        eventCode = '$TASKSTOP:';
+        eventCode = '$TASKSTOP ';
         eventColor = 16711935;
+        updateSuccessLogEntry()
     case 'kill'
-        eventCode = '$TASKKILL:';
+        eventCode = '$TASKKILL ';
         eventColor = 255;
     case 'error'
-        eventCode = '$TASKERR:';
+        eventCode = '$TASKERR ';
         eventColor = 255;
     case 'annotate'
-        eventCode = '@EVENT:';
+        eventCode = '@EVENT ';
         eventColor = 16711680;
         % Update CSV annotation log file
 end
 
 %% Sending Comment
 for i = 1:numel(onlineNSP)
-    comment = [eventCode,'EMU-0001'];
+    comment = [eventCode,emuStr];
     cbmex('comment', eventColor, 0,comment,'instance',onlineNSP(i)-1);
     disp(comment)
-    comment = [];
 end
 
 if strcmp(event,'start')
     for i = 1:numel(onlineNSP)
-        comment = ['$TASKID:',prefix,filename,suffix{i}];
+        comment = ['$TASKID ',filename,suffix{i}];
         cbmex('comment', eventColor, 0,comment,'instance',onlineNSP(i)-1);
         disp(comment)
-        comment = [];
     end
 end
 
