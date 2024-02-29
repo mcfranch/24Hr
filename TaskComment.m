@@ -1,4 +1,4 @@
-function [onlineNSP,EMU,subj] = TaskComment(filename,event)
+function [onlineNSP,EMU,subj] = TaskComment(fi,event)
 %TASKCOMMENT Sends a comment to Blackrock NSPs based on filename and given
 %event flag
 %

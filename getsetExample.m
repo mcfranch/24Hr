@@ -10,6 +10,6 @@
 TaskInfo = 'block2_run4';
 TaskID = ['EMU-',EMU_ID,'_subj','-',Subj,'_',TaskInfo];
 
-setEMU(EMU_ID, TaskID, T)
+setEMU(EMU_ID, TaskID)
 
 %EMU-0001_subj-YEX_task-whatever_NSP-1.ns3
