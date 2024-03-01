@@ -20,7 +20,7 @@ function [onlineNSP] = TaskComment(event,filename)
 %           filename input
 % event - a string/char array denoting the type of event this comment is
 %           representing. Available options include 'start','stop','kill',
-%           and 'error'
+%           and 'error', and 'annotate' for any task-related comments you want to send during the experiment.
 %
 % OUTPUT
 % onlineNSP - an integer array representing the indices of the NSPs which
